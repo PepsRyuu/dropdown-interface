@@ -1,0 +1,27 @@
+.DropdownInterface {
+    position: fixed;
+    border: 1px solid black;
+    box-sizing: border-box;
+    max-height: calc(38px * 10);
+    overflow: auto;
+}
+
+.DropdownInterface .item, .DropdownInterface:empty::after {
+    background-color: white;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.DropdownInterface .item {
+    cursor: pointer;
+}
+
+.DropdownInterface .item.focused {
+    background-color: lightblue;
+}
+
+.DropdownInterface:empty::after {
+    content: 'No Items found';
+    color: #999;
+    display: block;
+}

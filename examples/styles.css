@@ -1,0 +1,35 @@
+html, body {
+    font-family: sans-serif;
+    padding: 0 20px;
+}
+
+.MultiSelect, .Select {
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 200px;
+    min-height: 34px;
+    display: block;
+    box-sizing: border-box;
+    padding: 5px;
+}
+
+.MultiSelect-selected {
+    display: inline-block;
+    background-color: blue;
+    color: white;
+    border-radius: 3px;
+    border: 1px solid black;
+    margin: 2px;
+}
+
+.MultiSelect-selected .remove, .MultiSelect-selected .title {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 3px;
+    font-size: 12px;
+}
+
+.MultiSelect-selected .remove {
+    border-right: 1px solid white;
+    cursor: pointer;
+}
