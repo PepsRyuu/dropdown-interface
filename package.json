@@ -1,8 +1,9 @@
 {
     "name": "dropdown-interface",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "A flexible generic JavaScript dropdown component that can be attached to any element.",
     "main": "lib/DropdownInterface.js",
+    "module": "dist/DropdownInterface.esm.js",
     "author": "Paul Sweeney",
     "license": "MIT",
     "scripts": {
