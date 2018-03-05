@@ -4,3 +4,5 @@ test/
 build.sh
 server.js
 examples/
+src/
+rollup.config.js

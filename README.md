@@ -19,7 +19,7 @@ This library aims to implement a similar behaviour to the native dropdown provid
 Inside your code, you can require the module and instantiate it, attaching it to an element:
 
 ```
-let DropdownInterface = require('dropdown-interface');
+import DropdownInterface from 'dropdown-interface';
 
 let el = document.createElement('input');
 

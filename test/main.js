@@ -1,10 +1,12 @@
-let DropdownInterface = require('../lib/DropDownInterface.js');
+let es_require = require('@std/esm')(module, {esm: 'js', cache: false});
+
+let DropdownInterface = es_require('../src/DropdownInterface').default;
 let expect = require('chai').expect;
 let fs = require('fs');
 let sinon = require('sinon');
 
 let style = document.createElement('style');
-style.textContent = fs.readFileSync('./lib/DropdownInterface.css', 'utf8');
+style.textContent = fs.readFileSync('./src/DropdownInterface.css', 'utf8');
 document.head.appendChild(style);
 
 function getList() {

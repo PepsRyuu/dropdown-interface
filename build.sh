@@ -7,6 +7,9 @@ set -e
 npm config set strict-ssl false
 npm install
 
+# Build
+npm run build
+
 # Test
 npm run test -- --console --once
 
