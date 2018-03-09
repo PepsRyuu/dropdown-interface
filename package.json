@@ -1,6 +1,6 @@
 {
     "name": "dropdown-interface",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "A flexible generic JavaScript dropdown component that can be attached to any element.",
     "main": "dist/DropdownInterface.cjs.js",
     "module": "dist/DropdownInterface.esm.js",

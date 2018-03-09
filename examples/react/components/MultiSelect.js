@@ -1,4 +1,4 @@
-window.MultiSelect = class extends React.Component {
+window.MultiSelect = class MultiSelect extends React.Component {
     constructor () {
         super();
         this.state = {
@@ -18,6 +18,11 @@ window.MultiSelect = class extends React.Component {
 
     componentWillReceiveProps (props) {
         this.createInterface(props);
+    }
+
+    componentWillUnmount () {
+        this.interface.destroy();
+        this.interface = undefined;
     }
 
     createInterface (props) {

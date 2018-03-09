@@ -60,7 +60,7 @@ class DropdownInterface {
         _(this).focusIndex = 0;
         
         if (_(this).isShowing) {
-            _(this).isShowing = false;
+            hideList.call(this);
             showList.call(this);
         }
     }
@@ -136,6 +136,8 @@ function getFocusableElement () {
  * @method onItemClick
  */
 function onItemClick (e) {
+    e.stopPropagation();
+
     let index = parseInt(e.currentTarget.getAttribute('data-index'));
     setFocusedItem.call(this, index);
     triggerItemSelected.call(this);
@@ -163,9 +165,12 @@ function onItemHover (e) {
  * @method triggerItemSelected
  */
 function triggerItemSelected () {
-    hideList.call(this);
     let item = _(this).items[_(this).focusIndex];
-    _(this).onItemSelected.call(undefined, item);
+
+    if (!item.disabled) {
+        hideList.call(this);
+        _(this).onItemSelected.call(undefined, item);
+    }
 }
 
 /**
@@ -362,7 +367,7 @@ function setFocusedItem (newIndex) {
     // Need to scroll the element into view.
     let el = _(this).element.querySelector('.item.focused');
 
-    if (el) {
+    if (_(this).isShowing && el) {
         let parent = el.offsetParent.getBoundingClientRect();
         let rect = el.getBoundingClientRect();
 
@@ -386,6 +391,10 @@ function render () {
         let el = document.createElement('div');
         el.setAttribute('class', 'item');
         el.setAttribute('data-index', index);
+
+        if (item.disabled) {
+            el.classList.add('disabled');
+        }
 
         if (_(this).onItemRender) {
             _(this).onItemRender.call(undefined, el, item);

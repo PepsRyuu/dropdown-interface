@@ -32,6 +32,9 @@ class App extends React.Component {
                 <h1>Custom Rendering</h1>
                 <p>Not happy with the default rendering? Add your own rendering logic.</p>
                 <CustomSelect items={small_items} onChange={e => this.onChange('custom', e)} selected={this.state.custom}/>
+                <h1>Disabled Items</h1>
+                <p>Disabled items in a dropdown list.</p>
+                <Select items={disabled_small_items} onChange={e => this.onChange('simple', e)} selected={this.state.simple} />
             </div>
         );
     }
