@@ -20,6 +20,10 @@
     background-color: lightblue;
 }
 
+.DropdownInterface .item.disabled {
+    color: #999;
+}
+
 .DropdownInterface:empty::after {
     content: 'No Items found';
     color: #999;

@@ -2,17 +2,27 @@ window.BaseSelect = class extends React.Component {
     constructor () {
         super();
 
-        this.onItemSelected = this.onItemSelected.bind(this);
+        this.onItemSelected = this.onItemSelected.bind(this); 
     }
 
     componentDidMount () {
-        this.createInterface(this.props);
+        this.interface = new DropdownInterface({
+            onItemSelected: this.onItemSelected,
+            parent: ReactDOM.findDOMNode(this),
+            onItemRender: this.onItemRender
+        });
+
+        this.applyPropsToInterface(this.props);
+    }
+
+    componentWillUnmount () {
+        this.interface.destroy();
+        this.interface = undefined;
     }
 
     componentWillReceiveProps (props) {
-        this.createInterface(props);
+        this.applyPropsToInterface(props);
     }
-
 
     onItemSelected (selected) {
         this.props.onChange(selected);
@@ -28,17 +38,12 @@ window.BaseSelect = class extends React.Component {
 
     onInput (e) {}
 
-    createInterface (props) {
+    applyPropsToInterface (props) {
         if (this.interface) {
-            this.interface.destroy();
+            this.interface.hideList();
         }
 
-        this.interface = new DropdownInterface({
-            items: props.items || [],
-            onItemSelected: this.onItemSelected,
-            parent: ReactDOM.findDOMNode(this),
-            onItemRender: this.onItemRender
-        });
+        this.interface.setItems(props.items || []);
 
         if (props.selected) {
             this.input.value = props.selected.label;

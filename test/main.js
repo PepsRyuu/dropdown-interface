@@ -322,6 +322,16 @@ describe('Dropdown Interface', function() {
                 expect(items[0].classList.contains('focused')).to.be.false;
                 expect(items[1].classList.contains('focused')).to.be.true;
             });
+
+            it ('should work after hiding the list', () => {
+                inst.showList();
+                inst.hideList();
+                inst.setFocusedItem(1);
+                inst.showList();
+                let items = getListItems();
+                expect(items[0].classList.contains('focused')).to.be.false;
+                expect(items[1].classList.contains('focused')).to.be.true;
+            })
         });
 
         describe('destroy()', () => {
@@ -423,7 +433,7 @@ describe('Dropdown Interface', function() {
     });
     
     describe('Behaviours', () => {
-        let inst, el;
+        let inst, el, onItemSelectedSpy;
 
         beforeEach(() => {
             el = document.createElement('input');
@@ -431,10 +441,11 @@ describe('Dropdown Interface', function() {
             el.style.top = '10px';
             el.style.left = '10px';
             document.body.appendChild(el);
+            onItemSelectedSpy = sinon.spy();
             inst = new DropdownInterface({
                 parent: el,
                 items: [{label: '1'}, {label: '2'}, {label: '3'}],
-                onItemSelected: sinon.spy()
+                onItemSelected: onItemSelectedSpy
             });
         });
 
@@ -555,6 +566,52 @@ describe('Dropdown Interface', function() {
             }); 
         })
 
+        describe ('disabled', () => {
+            beforeEach(() => {
+                let items = Array.from(new Array(20), (v, i) => ({
+                    label: 'item ' + i,
+                    value: i
+                }));
+
+                items[0].disabled = true;
+
+                inst.setItems(items);
+            });
+
+            it ('should prevent clicking of items that are disabled', () => {
+                inst.showList();
+                getListItems()[0].click();
+                expect(onItemSelectedSpy.callCount).to.equal(0);
+                getListItems()[1].click();
+                expect(onItemSelectedSpy.callCount).to.equal(1);
+                inst.hideList();
+            });
+
+            it ('should prevent pressing enter on items that are disabled', () => {
+                inst.showList();
+                inst.handleKeyDown({
+                    keyCode: Keys.ENTER,
+                    stopPropagation: sinon.spy()
+                });
+                expect(onItemSelectedSpy.callCount).to.equal(0);
+                inst.handleKeyDown({keyCode: Keys.DOWN, stopPropagation: sinon.spy()});
+                inst.handleKeyDown({
+                    keyCode: Keys.ENTER,
+                    stopPropagation: sinon.spy()
+                });
+                expect(onItemSelectedSpy.callCount).to.equal(1);
+                inst.hideList();
+
+            });
+
+            it ('should add a disabled class to items that are disabled', () => {
+                inst.showList();
+                let items = getListItems();
+                expect(items[0].classList.contains('disabled')).to.be.true;
+                expect(items[1].classList.contains('disabled')).to.be.false;
+                inst.hideList();
+            });
+        });
 
     });
 });
