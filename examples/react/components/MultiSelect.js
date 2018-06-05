@@ -66,7 +66,6 @@ window.MultiSelect = class MultiSelect extends React.Component {
     }
 
     onInputKeyDown (e) {
-        e.preventDefault(); // Stop scrolling.
         this.interface.handleKeyDown(e);
     }
 

@@ -36,6 +36,8 @@ class DropdownInterface {
         this.setItems(options.items || []);
         _(this).onItemSelected = options.onItemSelected;
         _(this).onItemRender = options.onItemRender;
+        _(this).onListShow = options.onListShow;
+        _(this).onListHide = options.onListHide;
         _(this).focusIndex = 0;
         _(this).isShowing = false;
         _(this).element = document.createElement('div');
@@ -186,6 +188,9 @@ function handleKeyDown (e) {
     if (!_(this).isShowing) {
         if (e.keyCode === Keys.DOWN) {
             e.stopPropagation();
+            if (e.preventDefault) {
+                e.preventDefault(); // stops scrolling of page
+            }
             showList.call(this);
         }
 
@@ -257,6 +262,14 @@ function showList () {
     [].forEach.call(itemEls, el => {
         el.addEventListener('click', onItemClick.bind(this));
         el.addEventListener('mouseenter', onItemHover.bind(this));
+
+        // Make sure we remain focused on the current parent.
+        el.addEventListener('mousedown', () => {
+            // Skipping a frame so that it goes to body and then we can take the focus back.
+            requestAnimationFrame(() => {
+                getFocusableElement.call(this).focus();
+            });
+        });
     });
 
     // Position the element
@@ -298,6 +311,10 @@ function showList () {
     }
     
     setFocusedItem.call(this, _(this).focusIndex);
+
+    if (_(this).onListShow) {
+        _(this).onListShow();
+    }
 }
 
 /**
@@ -315,6 +332,10 @@ function hideList () {
         _(this).wheelEvent.stop();
         _(this).preventScrollEvent.stop();
         document.body.removeChild(_(this).element);
+
+        if (_(this).onListHide) {
+            _(this).onListHide();
+        }
     }
 }
 

@@ -38,6 +38,8 @@ let interface = new DropdownInterface({
 * ***HTMLElement* parent** - Native HTMLElement to render relatively to.
 * ***Function&lt;Object item&gt;* onItemSelected** - Receives the item that was selected in the list. 
 * ***Function&lt;HTMLElement el, Object item&gt;* onItemRender** - Custom rendering support. Modify the element to be rendered however you want. By default it renders the label.
+* ***Function* onListShow** - Triggers when list is shown, useful for changing visual styles such as arrow directions.
+* ***Function* onListHide** - Triggers when list is hidden.
 
 
 ## Methods

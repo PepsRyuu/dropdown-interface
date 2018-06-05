@@ -212,6 +212,72 @@ describe('Dropdown Interface', function() {
                 inst.hideList();
             });
         });
+
+        describe('onListShow', () => {
+            let spy, inst;
+
+            beforeEach(() => {
+                spy = sinon.spy();
+                inst = new DropdownInterface({
+                    parent: document.createElement('div'),
+                    items: [{label: 'item 1', value: 1}, {label: 'item 2', value: 2}],
+                    onListShow: spy
+                });
+            });
+
+            it ('should trigger when list is shown', () => {
+                expect(spy.callCount).to.equal(0);
+                inst.showList();
+                expect(spy.callCount).to.equal(1);
+                inst.hideList();
+            });
+
+            it ('should not trigger again when list is already showing', () => {
+                inst.showList();
+                expect(spy.callCount).to.equal(1);
+                inst.showList();
+                expect(spy.callCount).to.equal(1);
+                inst.hideList();
+                inst.showList();
+                expect(spy.callCount).to.equal(2);
+                inst.hideList();
+            });
+        });
+
+        describe('onListHide', () => {
+            let spy, inst;
+
+            beforeEach(() => {
+                spy = sinon.spy();
+                inst = new DropdownInterface({
+                    parent: document.createElement('div'),
+                    items: [{label: 'item 1', value: 1}, {label: 'item 2', value: 2}],
+                    onListHide: spy
+                });
+            });
+
+            it ('should trigger when list is hidden', () => {
+                expect(spy.callCount).to.equal(0);
+                inst.showList();
+                expect(spy.callCount).to.equal(0);
+                inst.hideList();
+                expect(spy.callCount).to.equal(1);
+            });
+
+            it ('should not trigger again when list is already hidden', () => {
+                inst.showList();
+                inst.showList();
+                expect(spy.callCount).to.equal(0);
+                inst.hideList();
+                expect(spy.callCount).to.equal(1);
+                inst.hideList();
+                expect(spy.callCount).to.equal(1);
+                inst.showList();
+                expect(spy.callCount).to.equal(1);
+                inst.hideList();
+                expect(spy.callCount).to.equal(2);
+            });
+        });
     });
 
     describe('Methods', () => {
@@ -349,14 +415,43 @@ describe('Dropdown Interface', function() {
                 let spy = sinon.spy();
                 inst.handleKeyDown({
                     keyCode: 99,
-                    stopPropagation: spy
+                    stopPropagation: spy,
+                    preventDefault: sinon.spy()
                 });
 
                 expect(spy.callCount).to.equal(0);
 
                 inst.handleKeyDown({
                     keyCode: Keys.DOWN,
-                    stopPropagation: spy
+                    stopPropagation: spy,
+                    preventDefault: sinon.spy()
+                });
+
+                expect(spy.callCount).to.equal(1);
+            });
+
+            it ('should call preventDefault if it\'s opening the list (to prevent scroll)', () => {
+                let spy = sinon.spy();
+                inst.handleKeyDown({
+                    keyCode: 99,
+                    stopPropagation: sinon.spy(),
+                    preventDefault: spy
+                });
+
+                expect(spy.callCount).to.equal(0);
+
+                inst.handleKeyDown({
+                    keyCode: Keys.DOWN,
+                    stopPropagation: sinon.spy(),
+                    preventDefault: spy
+                });
+
+                expect(spy.callCount).to.equal(1);
+
+                inst.handleKeyDown({
+                    keyCode: Keys.DOWN,
+                    stopPropagation: sinon.spy(),
+                    preventDefault: spy
                 });
 
                 expect(spy.callCount).to.equal(1);
